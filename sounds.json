@@ -99,6 +99,11 @@
 			"text": "Oh merde, oh c'est con ça",
 			"path": "sounds/c_est_con.mp3",
 			"regex": "(c|c.{0,1}est).*con"
+		},
+		{
+			"text": "Vos daronnes y boivent du Sprite sa mère",
+			"path": "sounds/sprite_sa_mere.mp3",
+			"regex": "sprite"
 		}
 		
 	]
