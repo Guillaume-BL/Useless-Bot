@@ -212,3 +212,4 @@ func PlayAudioFile(v *discordgo.VoiceConnection, filename string, stop <-chan bo
 		}
 	}
 }
+>>>>>>> a70cba95e57aa41a3777597c483d9ba69fb65c51
