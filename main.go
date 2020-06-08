@@ -276,4 +276,3 @@ func playSound(s *discordgo.Session, MessageChannelID, guildID, vocalChannelID, 
 	}
 
 }
->>>>>>> a70cba95e57aa41a3777597c483d9ba69fb65c51
