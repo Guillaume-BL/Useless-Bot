@@ -104,6 +104,11 @@
 			"text": "Vos daronnes y boivent du Sprite sa mère",
 			"path": "sounds/sprite_sa_mere.mp3",
 			"regex": "sprite"
+		},
+		{
+			"text": "Allo !",
+			"path": "sounds/allo.mp3",
+			"regex": "allo"
 		}
 		
 	]
