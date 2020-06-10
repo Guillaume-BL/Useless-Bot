@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"regexp"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -243,11 +244,9 @@ func playSound(s *discordgo.Session, MessageChannelID, guildID, vocalChannelID, 
 		// Join the provided voice channel.
 		vc, err := s.ChannelVoiceJoin(guildID, vocalChannelID, false, true)
 		if err != nil {
+			isPlaying = false
 			return err
 		}
-
-		// Sleep for a specified amount of time before playing the sound
-		//time.Sleep(50 * time.Millisecond)
 
 		// Start speaking.
 		vc.Speaking(true)
@@ -262,8 +261,6 @@ func playSound(s *discordgo.Session, MessageChannelID, guildID, vocalChannelID, 
 		//vc.Disconnect()
 
 		isPlaying = false
-
-		//time.Sleep(250 * time.Second)
 
 		return nil
 	} else {
