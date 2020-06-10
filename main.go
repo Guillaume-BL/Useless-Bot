@@ -174,6 +174,7 @@ func messageEvent(s *discordgo.Session, m *discordgo.MessageCreate) {
 				}
 			}
 		}
+		go sendEmojiIfContains(s, m, getRandSpyroEmojiFromFromGuild(g), "spyro")
 		go sendEmojiIfContains(s, m, "\U0001F409", "dragon")
 		go sendEmojiIfContains(s, m, getEmojiFromFromGuild(g, "capybara"), "capybara")
 		go sendCapybaraPicture(s, m)
@@ -194,7 +195,20 @@ func getEmojiFromFromGuild(g *discordgo.Guild, emoji_name string) string {
 		}
 	}
 	return emojiId
+}
 
+func getRandSpyroEmojiFromFromGuild(g *discordgo.Guild) string {
+
+	emojiId := ""
+	var spyro_tag []*discordgo.Emoji
+	if g != nil {
+		for _, i := range g.Emojis {
+			if strings.Contains(strings.ToLower(i.Name), strings.ToLower("spyro")) {
+				spyro_tag := append(spyro_tag, i)
+			}
+		}
+	}
+	return spyro_tag[rand.Intn(len(spyro_tag)-1)].APIName()
 }
 
 func sendEmojiIfContains(s *discordgo.Session, m *discordgo.MessageCreate, emojiID, match string) {
