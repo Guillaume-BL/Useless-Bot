@@ -109,6 +109,11 @@
 			"text": "Allo !",
 			"path": "sounds/allo.mp3",
 			"regex": "allo"
+		},
+		{
+			"text": "J'fais pas beaucoup de maths, mais...",
+			"path": "sounds/maths_gbl3.mp3",
+			"regex": "maths"
 		}
 		
 	]
