@@ -129,6 +129,11 @@ func messageEvent(s *discordgo.Session, m *discordgo.MessageCreate) {
 	g, _ := s.Guild(m.GuildID)
 	if g != nil {
 
+		go sendEmojiIfContains(s, m, getRandSpyroEmojiFromFromGuild(g), "spyro")
+		go sendEmojiIfContains(s, m, "\U0001F409", "dragon")
+		go sendEmojiIfContains(s, m, getEmojiFromFromGuild(g, "capybara"), "capybara")
+		go sendCapybaraPicture(s, m)
+
 		content_lowered := strings.ToLower(m.Content)
 
 		if strings.Contains(content_lowered, "!help") {
@@ -146,37 +151,36 @@ func messageEvent(s *discordgo.Session, m *discordgo.MessageCreate) {
 			s.ChannelMessageDelete(m.ChannelID, m.Message.ID)
 		}
 
-		v := g.VoiceStates
-		var voiceStateOfUser *discordgo.VoiceState
-		for _, ve := range v {
-			if ve.UserID == m.Author.ID {
-				voiceStateOfUser = ve
+		go func() {
+
+			v := g.VoiceStates
+			var voiceStateOfUser *discordgo.VoiceState
+			for _, ve := range v {
+				if ve.UserID == m.Author.ID {
+					voiceStateOfUser = ve
+				}
 			}
-		}
 
-		if voiceStateOfUser != nil {
+			if voiceStateOfUser != nil {
 
-			for _, sound := range sounds.Sounds {
-				if re, err := regexp.Compile(sound.Regex); err != nil {
-					fmt.Println(err)
-				} else {
+				for _, sound := range sounds.Sounds {
+					if re, err := regexp.Compile(sound.Regex); err != nil {
+						fmt.Println(err)
+					} else {
 
-					if re.Match([]byte(content_lowered)) {
-						response := &discordgo.MessageEmbed{
-							Title:       "The Useless Bot - SoundBox",
-							Description: sound.Text,
+						if re.Match([]byte(content_lowered)) {
+							response := &discordgo.MessageEmbed{
+								Title:       "The Useless Bot - SoundBox",
+								Description: sound.Text,
+							}
+							s.ChannelMessageSendEmbed(m.ChannelID, response)
+							playSound(s, m.ChannelID, voiceStateOfUser.GuildID, voiceStateOfUser.ChannelID, sound.Path)
+							break
 						}
-						s.ChannelMessageSendEmbed(m.ChannelID, response)
-						playSound(s, m.ChannelID, voiceStateOfUser.GuildID, voiceStateOfUser.ChannelID, sound.Path)
-						break
 					}
 				}
 			}
-		}
-		go sendEmojiIfContains(s, m, getRandSpyroEmojiFromFromGuild(g), "spyro")
-		go sendEmojiIfContains(s, m, "\U0001F409", "dragon")
-		go sendEmojiIfContains(s, m, getEmojiFromFromGuild(g, "capybara"), "capybara")
-		go sendCapybaraPicture(s, m)
+		}()
 	} else {
 		go sendPM(s, m)
 		return
