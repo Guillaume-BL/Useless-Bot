@@ -11,7 +11,6 @@ import (
 	"os/signal"
 	"regexp"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 
@@ -199,12 +198,11 @@ func getEmojiFromFromGuild(g *discordgo.Guild, emoji_name string) string {
 
 func getRandSpyroEmojiFromFromGuild(g *discordgo.Guild) string {
 
-	emojiId := ""
 	var spyro_tag []*discordgo.Emoji
 	if g != nil {
 		for _, i := range g.Emojis {
 			if strings.Contains(strings.ToLower(i.Name), strings.ToLower("spyro")) {
-				spyro_tag := append(spyro_tag, i)
+				spyro_tag = append(spyro_tag, i)
 			}
 		}
 	}
